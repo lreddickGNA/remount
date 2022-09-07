@@ -3,6 +3,7 @@
 
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
+import { createRoot } from 'react-dom/client'
 import retargetEvents from 'react-shadow-dom-retarget-events'
 
 /**
@@ -17,7 +18,7 @@ export function mount(elSpec, mountPoint, props, element) {
 }
 
 /**
- * Updates a custom element by calling `ReactDOM.render()`.
+ * Updates a custom element by calling `createRoot().render()`.
  * @private
  *
  * @param {ElementSpec} elSpec
@@ -29,7 +30,8 @@ export function mount(elSpec, mountPoint, props, element) {
 export function update(elSpec, mountPoint, props, element) {
   const { component } = elSpec
   const reactElement = React.createElement(component, props)
-  ReactDOM.render(reactElement, mountPoint)
+  const root = createRoot(mountPoint);
+  root.render(reactElement);
   if (element) {
     retargetEvents(element.shadowRoot)
   }
@@ -39,10 +41,10 @@ export function update(elSpec, mountPoint, props, element) {
  * Unmounts a component.
  * @private
  *
- * @param {ElementSpec} elSpec
+ * @param {ElementSpec} _elSpec
  * @param {HTMLElement} mountPoint
  */
 
-export function unmount(elSpec, mountPoint) {
+export function unmount(_elSpec, mountPoint) {
   ReactDOM.unmountComponentAtNode(mountPoint)
 }
